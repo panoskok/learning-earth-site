@@ -57,7 +57,7 @@ PAGES = [
     dict(path="/chi/", pillar="chi", kind="cornerstone", status="published",
          file="what-is-chi-cornerstone.md",
          hero="chi-pattern-and-material", og_bg="bg_chi.jpg",
-         alt="Grey particles enter from the left, pass through a standing teal pattern at the centre, and leave on the right as orange particles. The pattern persists while the material is replaced.",
+         alt="Grey particles enter from the left, pass through a standing gold pattern at the centre, and leave on the right as warm particles. The pattern persists while the material is replaced.",
          caption="The pattern persists; the material turns over.",
          meta="Chi is usually called a mysterious life energy. A systems engineer argues it is the flow of organization: a process, not a substance."),
     dict(path="/sources/", pillar="sources", kind="cornerstone", status="published",
@@ -66,11 +66,11 @@ PAGES = [
          alt="The Chinese character qi (氣) in large type, with the titles Neiye, Mencius and Huangdi Neijing in Chinese beneath it.",
          caption=None,
          meta="A reader’s guide to the primary sources on qi, prana and pneuma: dates, what each text says, and why standard translations distort it."),
-    dict(path="/science/", pillar="science", kind="cornerstone", status="draft",
+    dict(path="/science/", pillar="science", kind="cornerstone", status="published",
          file="science-behind-learning-earth-cornerstone.md",
-         hero="science-energy-flow", og_bg="bg_science.jpg",
-         alt="A stream of coloured light flows from the Sun to Earth and spreads across a living landscape.",
-         caption="Energy flowing through a system held away from equilibrium.",
+         hero="science-anchors", og_bg="bg_science.jpg",
+         alt="A diagram of five numbered circles on a navy field. From left: Prigogine (load-bearing), Lovelock & Margulis (load-bearing), Levin (supporting), Shannon & Landauer (supporting), Tononi (illustrative).",
+         caption="The five scientific anchors of the book, with their load path.",
          meta="The five scientific anchors of The Learning Earth: what each establishes, what it does not support, and where the philosophy begins."),
     # planned clusters (become real pages when a markdown file + status are added)
     dict(path="/earth-as-a-learning-system/dissipative-structures-explained/", pillar="earth", kind="cluster", status="planned",
@@ -193,12 +193,19 @@ def resolve_links(md):
 FONT_PRELOAD = """<link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>"""
 
-MARK = ('<svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><g stroke="#52DAC6" stroke-width="1.2" opacity=".8">'
-        '<line x1="8" y1="12" x2="20" y2="7"/><line x1="20" y1="7" x2="32" y2="13"/><line x1="8" y1="12" x2="14" y2="27"/>'
-        '<line x1="20" y1="7" x2="19" y2="25"/><line x1="32" y1="13" x2="27" y2="28"/><line x1="14" y1="27" x2="19" y2="25"/>'
-        '<line x1="19" y1="25" x2="27" y2="28"/></g><g fill="#ECE8DE"><circle cx="8" cy="12" r="2"/><circle cx="32" cy="13" r="2"/>'
-        '<circle cx="14" cy="27" r="1.7"/><circle cx="19" cy="25" r="1.7"/><circle cx="27" cy="28" r="1.7"/></g>'
-        '<circle cx="20" cy="7" r="2.4" fill="#52DAC6"/></svg>')
+# Brand mark: a radiating tree, nodding to the book cover.
+MARK = ('<svg class="mark" viewBox="0 0 40 40" aria-hidden="true">'
+        '<g stroke="#D8B564" stroke-width="1.2" stroke-linecap="round" fill="none" opacity=".9">'
+        '<path d="M20 32 L20 22"/>'
+        '<path d="M20 22 L11 15"/><path d="M20 22 L29 15"/>'
+        '<path d="M20 22 L20 11"/>'
+        '<path d="M20 22 L14 17"/><path d="M20 22 L26 17"/>'
+        '<path d="M11 15 L7 11"/><path d="M11 15 L8 18"/>'
+        '<path d="M29 15 L33 11"/><path d="M29 15 L32 18"/>'
+        '<path d="M20 11 L17 7"/><path d="M20 11 L23 7"/>'
+        '</g>'
+        '<circle cx="20" cy="22" r="2.8" fill="#F5D37A"/>'
+        '</svg>')
 
 
 def head(title, desc, path, og_image, schema=None, noindex=False, suffix=True, canonical_path=None):
@@ -221,7 +228,7 @@ def head(title, desc, path, og_image, schema=None, noindex=False, suffix=True, c
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="theme-color" content="#0A0D12">
+<meta name="theme-color" content="#0F3A4C">
 <meta property="og:type" content="{'website' if path == '/' else 'article'}">
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:title" content="{esc(title)}">
@@ -305,7 +312,7 @@ def make_og(slug, kicker, title, bg_name):
     out = ROOT / "assets" / "og" / f"{slug}.jpg"
     out.parent.mkdir(parents=True, exist_ok=True)
     W, H = 1200, 630
-    canvas = Image.new("RGB", (W, H), (10, 13, 18))
+    canvas = Image.new("RGB", (W, H), (15, 58, 76))  # cover navy
     if bg_name and (WORK_BG / bg_name).exists():
         bg = Image.open(WORK_BG / bg_name).convert("RGB")
         scale = max(W / bg.width, H / bg.height)
@@ -315,12 +322,12 @@ def make_og(slug, kicker, title, bg_name):
     ov = Image.new("RGBA", (W, H))
     od = ImageDraw.Draw(ov)
     for x in range(W):
-        a = int(max(0, min(235, 235 - (x / W) * 235 * 0.95))) if x < W else 0
-        od.line([(x, 0), (x, H)], fill=(10, 13, 18, a if bg_name else 255))
+        a = int(max(0, min(230, 230 - (x / W) * 230 * 0.92))) if x < W else 0
+        od.line([(x, 0), (x, H)], fill=(15, 58, 76, a if bg_name else 255))
     canvas = Image.alpha_composite(canvas.convert("RGBA"), ov).convert("RGB")
     d = ImageDraw.Draw(canvas)
-    d.rectangle([70, 96, 76, 150], fill=(82, 218, 198))
-    d.text((96, 100), kicker.upper(), font=load_font(20, serif=False), fill=(82, 218, 198))
+    d.rectangle([70, 96, 76, 150], fill=(216, 181, 100))  # gold accent bar
+    d.text((96, 100), kicker.upper(), font=load_font(20, serif=False), fill=(216, 181, 100))
     tf = load_font(62, bold=False)
     lines = []
     for para in [title]:
@@ -335,9 +342,9 @@ def make_og(slug, kicker, title, bg_name):
         lines.append(line)
     y = 190
     for ln in lines[:5]:
-        d.text((72, y), ln, font=tf, fill=(236, 232, 222))
+        d.text((72, y), ln, font=tf, fill=(243, 238, 220))  # warm paper
         y += 76
-    d.text((72, 560), "THELEARNINGEARTH.COM", font=load_font(18, serif=False), fill=(142, 148, 136))
+    d.text((72, 560), "THELEARNINGEARTH.COM", font=load_font(18, serif=False), fill=(154, 175, 183))
     canvas.save(out, "JPEG", quality=86, optimize=True)
     return f"/assets/og/{slug}.jpg"
 
@@ -496,10 +503,10 @@ def home_page():
 <p class="eyebrow">A book in progress</p>
 <h1>The Learning <em>Earth</em></h1>
 <p class="subtitle">{SUBTITLE}</p>
-<p class="lead">The standard account treats Earth as a habitat. This book asks what changes if the planet is read as a system that accumulates structure, and what “learning” can rigorously mean at that scale. It is written by an engineer, and it marks the line between established science and interpretation.</p>
+<p class="lead">For four billion years, the Earth has been doing something. An engineer looks at the record and asks what can rigorously be called learning at that scale, and whether the oldest traditions were mapping the same thing from the inside.</p>
 <p class="actions"><a class="btn" href="/earth-as-a-learning-system/">Start with the introduction</a><a class="btn btn-ghost" href="/newsletter/">Be first to know</a></p>
 </div>
-<figure class="hero-fig"><img src="/assets/img/home-hero.webp" width="900" height="1347" alt="A translucent human figure rises from the sea. Its torso is an island of forest and animals; below the waterline the body continues as a column of ocean life, from plankton and shells to fish." fetchpriority="high"></figure>
+<figure class="hero-fig"><img src="/assets/img/book-cover.webp" width="900" height="1341" alt="The Learning Earth, book cover. A radiating gold tree on a deep navy field. Title and author set in a classical serif." fetchpriority="high"></figure>
 </div></section>
 
 <section class="home-section"><div class="wrap">
@@ -531,8 +538,8 @@ def book_page():
 <h1>The Learning Earth</h1><p class="dek">{SUBTITLE}</p></div></header>
 <div class="prose wrap-narrow">
 <h2>What the book argues</h2>
-<p>The standard account treats Earth as a habitat: a stage on which life happens. The Learning Earth reads the planet and its biosphere as one coupled system, and asks what “learning” can rigorously mean for such a system.</p>
-<p>It extends one reframing upward from organisms to ecosystems to the planet: <strong>chi, the concept the old traditions kept circling, read as the flow of organization</strong> (a process, not a substance), and asks what follows if organization, rather than energy or matter, is the thing that accumulates.</p>
+<p>The standard account treats Earth as a habitat: a stage on which life happens. The Learning Earth reads the planet and its biosphere as one coupled system, and asks what “learning” can rigorously mean for such a system. The book defines the term at its minimum: a system learns if it retains structure from past states in a way that changes how it responds to future ones. By that measure the Earth has been learning for four billion years, under no author’s intention.</p>
+<p>It extends one reframing all the way up, from organisms to ecosystems to the planet itself: <strong>chi, the concept the old traditions kept circling, read as the flow of organization</strong>. A process, not a substance. The book asks what follows if organization, rather than energy or matter, is the thing that accumulates.</p>
 <p>It is a philosophical synthesis, not a scientific result. Every step from physical description to interpretation is marked.</p>
 <h2>Where to buy</h2>
 <p>Not yet available. Leave your email below and you will hear when the book is ready.</p>
@@ -582,8 +589,8 @@ def about_page():
     h += f"""<main id="main">
 <header class="page-head"><div class="wrap-narrow"><h1>{AUTHOR}</h1></div></header>
 <div class="prose wrap-narrow">
-<p>Panagiotis Kokkorogiannis is an engineer by training. He brings a systems mindset (inputs, feedback, signal versus noise) to questions that philosophy and biology have long circled separately.</p>
-<p>He describes himself as an engineer, not a scientist. On this site, what is established science and what is his own interpretation are kept apart and marked as such.</p>
+<p>Panagiotis Kokkorogiannis is an engineer by training. He writes about the places where systems science and the oldest contemplative traditions appear to be pointing at the same territory from opposite sides.</p>
+<p>He describes himself as an engineer, not a scientist. On this site, what is established research and what is his own reading are kept apart and marked as such.</p>
 </div>
 </main>
 """
