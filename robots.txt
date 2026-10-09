@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /_drafts/
+Disallow: /_src/
+
+Sitemap: https://thelearningearth.com/sitemap.xml

@@ -1,0 +1,6 @@
+subscribers.db*
+subscribe.php
+admin.php
+config.local.php
+__pycache__/
+.DS_Store
